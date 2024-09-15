@@ -1,5 +1,4 @@
 import { v2 as cloudinary } from "cloudinary";
-import exp from "constants";
 import fs from "fs";
 
 cloudinary.config({
@@ -12,19 +11,18 @@ const uploadOnCloudinary = async (localFilePath) => {
   try {
     if (!localFilePath) return console.log("cloud't find the path");
     // Upload the file on cloudinary
-    const uploadResult = await cloudinary.uploader
+    const response = await cloudinary.uploader
       .upload(
         localFilePath,
         {
           resource_type: "auto",
         }
       )
-      .catch((error) => {
-        console.log("FILE upload ERROR: ",error);
-      });
       // file has been upload successfully
-      console.log(uploadResult.url);
-      return uploadResult.url;
+      // console.log("file is upload successfully : ",response);
+      fs.unlinkSync(localFilePath);
+      return response;
+      
   } catch (error) {
       fs.unlinkSync(localFilePath); // remove the locally saved temporary file as the upload operation got failed 
       return null; 
