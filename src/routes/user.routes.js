@@ -3,9 +3,9 @@ import { loginUser, logoutUser, registerUser } from "../controllers/user.control
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
-const userRouter = Router();
+const router = Router();
 
-userRouter.route("/register").post(
+router.route("/register").post(
     upload.fields([
         {
             name: "avatar",
@@ -19,12 +19,9 @@ userRouter.route("/register").post(
     registerUser
 )
 
-userRouter.route('/login').post(loginUser);
+router.route("/login").post(loginUser)
 
-// secured routes
-userRouter.route("/logout").post(
-    verifyJWT,
-    logoutUser
-)
+//secured routes
+router.route("/logout").post(verifyJWT, logoutUser)
 
-export default userRouter;
+export default router;
